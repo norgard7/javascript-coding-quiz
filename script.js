@@ -3,7 +3,8 @@ let choicesEl = document.querySelector("#choices");
 let startEl = document.querySelector("#start");
 let timerEl = document.querySelector("#countdown");
 let secondsLeft = 10;
-
+let remainingQuestions;
+let correctResponse = "";
 const myQuestion = [
     {
       question: "Who invented JavaScript?",
@@ -29,17 +30,39 @@ const myQuestion = [
 
 // add eventlistener to start button to start quiz
 startEl.addEventListener("click", function(){
-    let remainingQuestions = 5;
+    remainingQuestions = 5;
     // load the first question and load possible answers
     countDown();
     loadQuestion();
     // start timer
    
 })
+choicesEl.addEventListener("click", function(event){
+    let element = event.target;
+    if (element.matches("button") === true) {
+    let userAnswer = element.getAttribute("answer-options");
+    if(userAnswer === correctResponse) {
+        questionEl.textContent = "Correct!"
+    }else {
+        questionEl.textContent = "Wrong!"
+    }
+    
+    } 
+})
 
 function loadQuestion() {
+    choicesEl.innerHTML = "";
     questionEl.textContent = myQuestion[0].question;
-    choicesEl.textContent =  myQuestion[0].question.a;
+    correctResponse = myQuestion[0].correctAnswer;
+
+    for(let i = 0; i < 4; i++) {
+        let index = ["a", "b", "c", "d"]
+        let button = document.createElement("button");
+        button.textContent = myQuestion[0].answers[index[i]];
+        button.setAttribute("answer-options", index[i]);
+        choicesEl.appendChild(button);
+    }
+    
 }
 
 // starts countdown, displays timer, and clears interval
