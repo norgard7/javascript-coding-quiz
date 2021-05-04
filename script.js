@@ -1,10 +1,12 @@
 let questionEl = document.querySelector("#question");
 let choicesEl = document.querySelector("#choices");
 let startEl = document.querySelector("#start");
+let startBoxEl = document.querySelector("#start-box");
 let timerEl = document.querySelector("#countdown");
-let secondsLeft = 10;
-let remainingQuestions;
+let secondsLeft = 76;
+let gameOver = false;
 let correctResponse = "";
+let usedQs = [];
 const myQuestion = [
     {
       question: "Who invented JavaScript?",
@@ -30,35 +32,56 @@ const myQuestion = [
 
 // add eventlistener to start button to start quiz
 startEl.addEventListener("click", function(){
-    remainingQuestions = 5;
     // load the first question and load possible answers
     countDown();
-    loadQuestion();
+    chooseQuestion();
     // start timer
    
 })
 choicesEl.addEventListener("click", function(event){
     let element = event.target;
+    // once answer is selected check if answer is right or wrong
     if (element.matches("button") === true) {
+    startBoxEl.style.borderTop= "1px solid #000000";
     let userAnswer = element.getAttribute("answer-options");
     if(userAnswer === correctResponse) {
-        questionEl.textContent = "Correct!"
+          // if right moves onto next question && tells you if you are correct/wrong
+        startBoxEl.textContent = "Correct!"
+
     }else {
-        questionEl.textContent = "Wrong!"
+        // if you are wrong it will state you are wrong, deduct time from the timer, and move onto the next question
+        startBoxEl.textContent = "Wrong!"
+        secondsLeft -= 15;
     }
-    
+     // check how many questions have been asked
+    if(usedQs.length < 2){
+       chooseQuestion(); 
+    }else{
+        // run highscore function
+        gameOver = true;
+    }
+     
     } 
 })
-
-function loadQuestion() {
+function chooseQuestion() {
+    let shuffleQs = Math.floor(Math.random()*myQuestion.length);
+    if(usedQs.includes(shuffleQs)){
+        chooseQuestion();
+    }else{
+        usedQs.push(shuffleQs);
+        loadQuestion(shuffleQs);
+    }
+}
+function loadQuestion(q) {
     choicesEl.innerHTML = "";
-    questionEl.textContent = myQuestion[0].question;
-    correctResponse = myQuestion[0].correctAnswer;
+    startEl.innerHTML = "";
+    questionEl.textContent = myQuestion[q].question;
+    correctResponse = myQuestion[q].correctAnswer;
 
     for(let i = 0; i < 4; i++) {
         let index = ["a", "b", "c", "d"]
         let button = document.createElement("button");
-        button.textContent = myQuestion[0].answers[index[i]];
+        button.textContent = myQuestion[q].answers[index[i]];
         button.setAttribute("answer-options", index[i]);
         choicesEl.appendChild(button);
     }
@@ -70,7 +93,9 @@ function countDown() {
     let timerInterval = setInterval(function() {
         secondsLeft -- ;
         timerEl.textContent="Time: " + secondsLeft;
-    if(secondsLeft === 0) {
+        startBoxEl.style.borderTop = null;
+        startBoxEl.textContent="";
+    if(secondsLeft === 0 || gameOver) {
         // stops execution of action at set interval
         clearInterval(timerInterval);
         // run our highscore function
@@ -83,10 +108,10 @@ function countDown() {
 
 
 
-// once answer is selected check if answer is right or wrong
-    // if right moves onto next question && tells you if you are correct/wrong
-    // if you are wrong it will state you are wrong, deduct time from the timer, and move onto the next question
-    // check how many questions have been asked
+ 
+  
+    
+   
 
 // Once all questions have been asked stop timer, take highscore from timer, input initials, display a submit box
 
