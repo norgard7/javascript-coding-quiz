@@ -30,6 +30,12 @@ const myQuestion = [
     }
 ];
 
+function init() {
+    let storedScores = JSON.parse(localStorage.getItem("allHighScores"));
+    if(storedScores !== null) {
+        allHighScores = storedScores;
+    }
+}
 // add eventlistener to start button to start quiz
 startEl.addEventListener("click", function(){
     // load the first question and load possible answers
@@ -53,11 +59,16 @@ choicesEl.addEventListener("click", function(event){
         startBoxEl.textContent = "Wrong!"
         secondsLeft -= 15;
     }
+    setTimeout(function(){
+        startBoxEl.textContent = "";
+        startBoxEl.style.borderTop = "none";
+    },1500)
      // check how many questions have been asked
     if(usedQs.length < 2){
        chooseQuestion(); 
     }else{
         // run highscore function
+        // Once all questions have been asked stop timer/game over,
         gameOver = true;
     }
      
@@ -93,28 +104,77 @@ function countDown() {
     let timerInterval = setInterval(function() {
         secondsLeft -- ;
         timerEl.textContent="Time: " + secondsLeft;
-        startBoxEl.style.borderTop = null;
-        startBoxEl.textContent="";
     if(secondsLeft === 0 || gameOver) {
         // stops execution of action at set interval
         clearInterval(timerInterval);
+        highScore();
         // run our highscore function
     
     }
     },1000);
 }
+// creating the Elements for entering the highscore
+let highScoreLabelEL = document.createElement("label");
+let highScoreEl = document.createElement("input");
+let highScoreBtnEL = document.createElement("a");
+let highScoreContainer = document.createElement("div");
+let allHighScores = [];
+
+// create text content for the new elements created above
+highScoreLabelEL.textContent = "Enter Initials";
+highScoreBtnEL.textContent = "Submit";
+highScoreBtnEL.href = "highscores.html";
+// append high score elements to a div
+highScoreContainer.appendChild(highScoreLabelEL);
+highScoreContainer.appendChild(highScoreEl);
+highScoreContainer.appendChild(highScoreBtnEL);
+
+// when all questiosn ahve been aswered it says how much time is left as the final score
+function highScore() {
+    questionEl.textContent = "All Done!";
+    choicesEl.textContent = "Your final score is " + secondsLeft;
+    choicesEl.appendChild(highScoreContainer);
+}
 
 
-
-
-
- 
+// listens for user to submit highscore and pushes score to highscore array
+highScoreContainer.addEventListener('click', function(event) {
+    event.stopPropagation();
+    let element = event.target;
+    if (element.matches("a") === true){ 
+    let submitHighScore = {
+        initials: highScoreEl.value,
+        score: secondsLeft
+    };
+    allHighScores.push(submitHighScore);
+    storeHighScore();
+    }
+}) 
+// sorts high scores from highest to lowest
+function compare(a,b) {
+    let comparison = 0;
+    if( a.score > b.score) {
+        comparison = -1;
+    }else if(a.score < b.score) {
+        comparison = 1;
+    }
+    return comparison;
+}
+// collects values in an array and stores them locally
+function storeHighScore() {
+    allHighScores.sort(compare);
+    localStorage.setItem("allHighScores", JSON.stringify(allHighScores));   
+} 
+init();
   
     
    
 
-// Once all questions have been asked stop timer, take highscore from timer, input initials, display a submit box
+//  take highscore from timer, input initials, display a submit box
 
-// use local storage to rank high scores & prevent default refresh. Go to high score page. 
-// buttons go back & clear high scores. Add eventlisteners 
+
+
+    // seperate high scores page
+            // buttons go back & clear high scores. Add eventlisteners 
     // clear the local storage of high scores
+    // prettify with CSS
