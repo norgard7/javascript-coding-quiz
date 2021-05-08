@@ -11,20 +11,50 @@ const myQuestion = [
     {
       question: "Who invented JavaScript?",
       answers: {
-        a: "Douglas Crockford",
-        b: "Brendan Eich",
-        c: "Sheryl Sandberg",
-        d: "steve Jobs"
+        a: "1. Douglas Crockford",
+        b: "2. Brendan Eich",
+        c: "3. Sheryl Sandberg",
+        d: "4. steve Jobs"
       },
       correctAnswer: "b"
     },
     {
         question: "Which of the following is a valid type of function javascript suppports",
         answers: {
-            a: "named function",
-            b: "anonymous function",
-            c: "both of the above",
-            d: "none of the above",
+            a: "1. named function",
+            b: "2. anonymous function",
+            c: "3. both of the above",
+            d: "4. none of the above"
+        },
+        correctAnswer: "c"
+    },
+    {
+        question: "which of the following is not JavaScript Data Types",
+        answers: {
+            a: "1. undefined",
+            b: "2. Number",
+            c: "3. Boolean",
+            d: "4. Float"
+        },
+        correctAnswer: "d"
+    },
+    {
+        question: "Inside which HTML element do we put the JavaScript?",
+        answers: {
+            a: "1. <script>",
+            b: "2. <head>",
+            c: "3. <meta>",
+            d: "4. <style>"
+        },
+        correctAnswer: "a"
+    },
+    {
+        question: "Which of the following is not Javascript frameworks or libraries?",
+        answers: {
+            a: "1. Polymer",
+            b: "2. Meteor",
+            c: "3. Cassandra",
+            d: "4. JQuery"
         },
         correctAnswer: "c"
     }
@@ -38,12 +68,13 @@ function init() {
 }
 // add eventlistener to start button to start quiz
 startEl.addEventListener("click", function(){
+
     // load the first question and load possible answers
     countDown();
     chooseQuestion();
-    // start timer
-   
-})
+    // start timer 
+});
+
 choicesEl.addEventListener("click", function(event){
     let element = event.target;
     // once answer is selected check if answer is right or wrong
@@ -64,7 +95,7 @@ choicesEl.addEventListener("click", function(event){
         startBoxEl.style.borderTop = "none";
     },1500)
      // check how many questions have been asked
-    if(usedQs.length < 2){
+    if(usedQs.length < 5){
        chooseQuestion(); 
     }else{
         // run highscore function
@@ -72,8 +103,8 @@ choicesEl.addEventListener("click", function(event){
         gameOver = true;
     }
      
-    } 
-})
+}
+});
 function chooseQuestion() {
     let shuffleQs = Math.floor(Math.random()*myQuestion.length);
     if(usedQs.includes(shuffleQs)){
@@ -149,7 +180,9 @@ highScoreContainer.addEventListener('click', function(event) {
     allHighScores.push(submitHighScore);
     storeHighScore();
     }
-}) 
+
+}); 
+
 // sorts high scores from highest to lowest
 function compare(a,b) {
     let comparison = 0;
@@ -165,11 +198,9 @@ function storeHighScore() {
     allHighScores.sort(compare);
     localStorage.setItem("allHighScores", JSON.stringify(allHighScores));   
 } 
-init();
-  
-    
-   
 
+
+init();
 //  take highscore from timer, input initials, display a submit box
 
 
