@@ -68,6 +68,7 @@ function init() {
 }
 // add eventlistener to start button to start quiz
 startEl.addEventListener("click", function(){
+    startBoxEl.textContent = "";
 
     // load the first question and load possible answers
     countDown();
@@ -125,6 +126,7 @@ function loadQuestion(q) {
         let button = document.createElement("button");
         button.textContent = myQuestion[q].answers[index[i]];
         button.setAttribute("answer-options", index[i]);
+        button.classList.add("buttons");
         choicesEl.appendChild(button);
     }
     
@@ -135,12 +137,16 @@ function countDown() {
     let timerInterval = setInterval(function() {
         secondsLeft -- ;
         timerEl.textContent="Time: " + secondsLeft;
-    if(secondsLeft === 0 || gameOver) {
+    if(secondsLeft <=0 ) {
+        secondsLeft =0;
+        timerEl.textContent="Time: " + secondsLeft;
         // stops execution of action at set interval
         clearInterval(timerInterval);
         highScore();
         // run our highscore function
-    
+    }else if(gameOver) {
+        clearInterval(timerInterval);
+        highScore();
     }
     },1000);
 }
@@ -155,6 +161,8 @@ let allHighScores = [];
 highScoreLabelEL.textContent = "Enter Initials";
 highScoreBtnEL.textContent = "Submit";
 highScoreBtnEL.href = "highscores.html";
+highScoreBtnEL.classList.add("buttons");
+highScoreBtnEL.classList.add("submit");
 // append high score elements to a div
 highScoreContainer.appendChild(highScoreLabelEL);
 highScoreContainer.appendChild(highScoreEl);

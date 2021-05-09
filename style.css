@@ -1,5 +1,80 @@
+
+#highScore {
+    text-decoration: none;
+    color: black;
+    font-size: 1rem;
+}
+a {
+    text-decoration: none;
+}
+
+#countdown {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding-right: 1.5rem;
+    font-size: 1rem;
+}
+.container {
+    text-align: center;
+    margin: auto; 
+    padding: 1rem; 
+    width: 50%;
+}
+#question {
+    font-size: 2rem;
+    padding-bottom: 1rem;
+}
+#choices {
+    padding-bottom: 1rem;
+}
+#start{
+    margin: auto;
+}
+.buttons {
+    display: block;
+    background-color: rgb(138, 234, 247);
+    color:black;
+    padding: .25rem;
+    margin-bottom: .3rem;
+    border-radius: 5px;
+    text-decoration: none;
+}
+.submit {
+    display: inline-block;
+}
+
+/* highscores page */
 ol {
     margin-left: 10px;
-    padding-left: 10px;
+    padding-left: 2rem;
     list-style: decimal;
+    width: 50%;
+}
+
+li{
+    background-color: lightblue;
+    color:black;
+    font-size: 1.5rem;
+}
+li:nth-child(odd) {
+    background: lightslategrey;
+}
+h1 {
+    font-size: 2rem;
+    text-align: center;
+    padding-bottom: 15px;
+}
+main {
+    display: flex;
+    position: relative;
+    left: 25%;
+}
+#clear {
+   position: relative;
+   left: 42%;
+}
+#goBack {
+    position: relative;
+    left: 45%;  
 }
